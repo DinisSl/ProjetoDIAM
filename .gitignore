@@ -12,3 +12,4 @@ backend/*.pyc
 # General
 .env
 .idea/
+shellTest.txt

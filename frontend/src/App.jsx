@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 
 import Homepage from "./pages/Homepage.jsx";
-// import Edit from "./pages/Edit.jsx";
 
 const App = () => {
     return (
