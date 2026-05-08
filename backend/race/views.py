@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from .serializers import *
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+import datetime
 
 
 
@@ -87,23 +88,34 @@ def runners_detail(request, runner_id, race_id):
 
 @api_view(['POST'])
 def signup(request):
-    username = request.data.get('username')
+    first_name = request.data.get('first_name')
+    last_name = request.data.get('last_name')
+    email = request.data.get('email')
     password = request.data.get('password')
+    username = first_name + last_name
 
-    if not username or not password:
-        return Response({'msg': 'invalid username/password'}, status=status.HTTP_400_BAD_REQUEST)
+    if not first_name or not last_name or not email or not password:
+        return Response({'msg': 'invalid first_name/last_name/password/email'}, status=status.HTTP_400_BAD_REQUEST)
 
     if User.objects.filter(username=username).exists():
         return Response({'msg': 'username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+    elif User.objects.filter(email=email).exists():
+        return Response({'msg': 'email already exists'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user = User.objects.create_user(username=username, password=password)
+    user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email, password=password,date_joined=datetime.datetime.now())
     return Response({'msg': 'user ' + user.username + ' created'}, status=status.HTTP_201_CREATED)
 
 
 @api_view(['POST'])
 def login_view(request):
-    username = request.data.get('username')
+    email = request.data.get('email')
     password = request.data.get('password')
+
+    try:
+        user_db = User.objects.get(email=email)
+        username = user_db.username
+    except User.DoesNotExist:
+        username = None
 
     user = authenticate(
         request,
@@ -130,4 +142,7 @@ def logout_view(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_view(request):
-    return Response({'username': request.user.username})
+    return Response({
+        'first_name': request.user.first_name,
+        'last_name': request.user.last_name
+    })

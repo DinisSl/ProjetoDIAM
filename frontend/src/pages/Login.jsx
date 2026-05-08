@@ -5,9 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer.jsx";
+import Header from "@/components/Header.jsx";
 
 function Login() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate();
@@ -19,7 +21,7 @@ function Login() {
 
     axios.post(
         URL_LOGIN,
-        { username, password },
+        { email, password },
         { withCredentials: true }
       ).then(() => {
         console.log('logged in');
@@ -29,6 +31,9 @@ function Login() {
   };
 
   return (
+    <>
+    <Header/>
+
     <div className="flex items-center justify-center min-h-screen bg-background">
       <Card className="w-full max-w-sm shadow-md">
         <CardHeader>
@@ -37,12 +42,12 @@ function Login() {
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username">Username:</Label>
+              <Label htmlFor="email">Username:</Label>
               <Input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -73,6 +78,9 @@ function Login() {
         </CardContent>
       </Card>
     </div>
+
+    <Footer/>
+    </>
   );
 }
 

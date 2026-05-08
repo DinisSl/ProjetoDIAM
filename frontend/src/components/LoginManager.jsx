@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button.jsx";
 const LoginManager = () => {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState(null);
+  const [first_name, setFirstName] = useState(null);
+  const [last_name, setLastName] = useState(null);
 
   const URL_USER = 'http://localhost:8000/race/api/user/';
   const URL_LOGOUT = 'http://localhost:8000/race/api/logout/';
@@ -14,8 +15,10 @@ const LoginManager = () => {
   useEffect(() => {
     axios
       .get(URL_USER, { withCredentials: true })
-      .then((response) =>
-        setUsername(response.data.username)
+      .then((response) => {
+        setFirstName(response.data.first_name)
+        setLastName(response.data.last_name)
+      }
       )
       .catch(() =>
         console.log('user not logged in')
@@ -26,7 +29,8 @@ const LoginManager = () => {
     axios
       .get(URL_LOGOUT, { withCredentials: true })
       .then(() => {
-        setUsername(null);
+        setFirstName(null);
+        setLastName(null);
         navigate('/');
       })
       .catch(() =>
@@ -36,9 +40,9 @@ const LoginManager = () => {
 
   return (
     <div className="flex items-center justify-end w-full gap-4 p-4 bg-background">
-      {username ? (
+      {first_name && last_name ? (
         <>
-          <p className="font-medium text-foreground">Olá {username}!</p>
+          <p className="font-medium text-foreground">Olá {first_name} {last_name}!</p>
           <Button onClick={handleLogout} variant="destructive">
             Logout
           </Button>
