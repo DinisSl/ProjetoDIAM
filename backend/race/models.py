@@ -26,52 +26,49 @@ class Voluntary(models.Model):
 
 
 
-
-
-class Tarefas(models.Model):
-
-
 class RunnerSignUp(models.Model):
     user=models.OneToOneField(Runner, on_delete=models.CASCADE)
     signUpDate=models.DateTimeField("Data e hora da Inscricao")
-    STATE_CHOICES = (
-    ("Banida","Ban","B"),
-    ("Ativa", "Active", "A"),
-    ("Cancelada","Canceled","C")
-    )
-    state=models.ChoiceField(choices=STATE_CHOICES)
+    STATE_CHOICES = {
+        (1,"Banida"),
+        (2,"Ativa" ),
+        (3,"Cancelada")
+    }
+
+
+    state=models.CharField(choices=STATE_CHOICES)
     classification=models.IntegerField()
     race=models.OneToOneField(Race, on_delete=models.CASCADE)
     admincomment=models.TextField()
 
     def __str__(self):
-        return self.user.first_name+" "+self.user.last_name
+        return self.user.user.first_name+" "+self.user.user.last_name
 
 class VoluntarySignUp(models.Model):
     user=models.OneToOneField(Voluntary, on_delete=models.CASCADE)
     signUpDate=models.DateTimeField("Data e hora da Inscricao")
     ROLE_CHOICES = (
-    ("EntregaDorsais","ED"),
-    ("ApoioNaPartida","AP"),
-    ("CoachDeBancada","CB"),
-    ("Orientacao","O"),
-    ("Abatescimentos","A"),
-    ("Seguranca","S"),
-    ("PrimeirosSocorros","PS"),
-    ("Pacer","P")
+    (1,"EntregaDorsais"),
+    (2,"ApoioNaPartida"),
+    (3,"CoachDeBancada"),
+    (4,"Orientacao"),
+    (5,"Abatescimentos"),
+    (6,"Seguranca"),
+    (7,"PrimeirosSocorros"),
+    (8,"Pacer")
 
     )
-    role=models.ChoiceField(choices=ROLE_CHOICES)
+    role=models.CharField(choices=ROLE_CHOICES)
     STATE_CHOICES = (
-    ("Pendente","P"),
-    ("Aprovado","A"),
-    ("Rejeitado","R")
+    (1,"Pendente"),
+    (2,"Aprovado"),
+    (3,"Rejeitado")
     )
-    state=models.ChoiceField(choices=STATE_CHOICES)
+    state=models.CharField(choices=STATE_CHOICES)
     admincomment = models.TextField()
 
     def __str__(self):
-        return self.user.first_name+" "+self.user.last_name
+        return self.user.user.first_name+" "+self.user.user.last_name
 
 
 
