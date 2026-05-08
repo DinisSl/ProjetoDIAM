@@ -2,9 +2,10 @@ from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
-
-from .models import Runner
+from django.contrib.auth import authenticate, login, logout
 from .serializers import *
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -65,7 +66,7 @@ def runners(request):
 
 
 @api_view(['PUT', 'DELETE'])
-def runners_detail(request, runner_id):
+def runners_detail(request, runner_id, race_id):
     try:
         runner = Runner.objects.get(pk=runner_id)
     except Runner.DoesNotExist:
@@ -82,3 +83,51 @@ def runners_detail(request, runner_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def signup(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    if not username or not password:
+        return Response({'msg': 'invalid username/password'}, status=status.HTTP_400_BAD_REQUEST)
+
+    if User.objects.filter(username=username).exists():
+        return Response({'msg': 'username already exists'}, status=status.HTTP_400_BAD_REQUEST)
+
+    user = User.objects.create_user(username=username, password=password)
+    return Response({'msg': 'user ' + user.username + ' created'}, status=status.HTTP_201_CREATED)
+
+
+@api_view(['POST'])
+def login_view(request):
+    username = request.data.get('username')
+    password = request.data.get('password')
+
+    user = authenticate(
+        request,
+        username=username,
+        password=password
+    )
+
+    if user is not None:
+        login(request, user)  # Criação da sessão
+        return Response({'msg': 'user logged in'})
+
+    return Response(
+        {'msg': 'invalid credentials'},
+        status=status.HTTP_401_UNAUTHORIZED
+    )
+
+
+@api_view(['GET'])
+def logout_view(request):
+    logout(request)
+    return Response({'msg': 'user logged out'})
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_view(request):
+    return Response({'username': request.user.username})

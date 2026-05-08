@@ -1,13 +1,14 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer.jsx";
-import Contador from "../components/Contador.jsx";
-
+import Counter from "../components/Counter.jsx";
+import LoginManager from "@/components/LoginManager.jsx";
 
 function Homepage() {
   return (
     <>
       <Header/>
-      <Contador/>
+      <LoginManager/>
+      <Counter/>
       <Footer/>
     </>
   );

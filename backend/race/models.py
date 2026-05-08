@@ -27,7 +27,8 @@ class Voluntary(models.Model):
 
 
 class RunnerSignUp(models.Model):
-    user=models.ManyToManyField(Runner, on_delete=models.CASCADE)
+    user=models.ForeignKey(Runner, on_delete=models.CASCADE)
+
     signUpDate=models.DateTimeField("Data e hora da Inscricao")
     STATE_CHOICES = {
         (1,"Banida"),
@@ -38,7 +39,7 @@ class RunnerSignUp(models.Model):
 
     state=models.CharField(choices=STATE_CHOICES)
     classification=models.IntegerField()
-    race=models.OneToOneField(Race, on_delete=models.CASCADE)
+    race=models.ForeignKey(Race, on_delete=models.CASCADE)
     admincomment=models.TextField()
 
     def __str__(self):

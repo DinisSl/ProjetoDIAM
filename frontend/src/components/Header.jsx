@@ -20,7 +20,7 @@ function Header() {
   }, []);
 
   return (
-    <div className="text-center py-10 border-b border-border">
+    <div className="text-center py-10">
 
       {racesList.length > 0 ? (
         <div>
