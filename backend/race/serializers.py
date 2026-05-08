@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Race
+from .models import *
 
 
 class RaceSerializer(serializers.ModelSerializer):
@@ -9,5 +9,5 @@ class RaceSerializer(serializers.ModelSerializer):
 
 class RunnerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Race
+        model = Runner
         fields = ('user', 'adminComment', 'classification')

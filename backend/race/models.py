@@ -27,7 +27,7 @@ class Voluntary(models.Model):
 
 
 class RunnerSignUp(models.Model):
-    user=models.OneToOneField(Runner, on_delete=models.CASCADE)
+    user=models.ManyToManyField(Runner, on_delete=models.CASCADE)
     signUpDate=models.DateTimeField("Data e hora da Inscricao")
     STATE_CHOICES = {
         (1,"Banida"),
