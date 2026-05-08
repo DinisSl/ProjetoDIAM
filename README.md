@@ -6,7 +6,6 @@
 ```bash
 cd frontend
 npm install
-npm install bootstrap reactstrap axios moment --save
 ```
 
 ### Backend
