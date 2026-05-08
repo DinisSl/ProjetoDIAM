@@ -34,7 +34,7 @@ const Imagem = () => {
     )
 }
 
-const Descricao = () => {
+const Description = () => {
     return (
         <div className="flex flex-row items-center gap-6 p-6 w-4/5 mx-auto bg-background text-foreground">
             <Texto/>
@@ -43,4 +43,4 @@ const Descricao = () => {
     )
 }
 
-export default Descricao;
+export default Description;
