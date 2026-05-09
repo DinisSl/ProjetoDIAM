@@ -2,6 +2,8 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import { Link } from "react-router-dom";
 
 const NavMenu = () => {
+
+
     return (
         <div>
           <NavigationMenu>

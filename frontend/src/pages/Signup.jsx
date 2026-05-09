@@ -10,7 +10,7 @@ import Footer from "@/components/Footer.jsx";
 
 const SIGNUP_URL = 'http://localhost:8000/race/api/signup/';
 
-const Signup = () => {
+const SignupLogic = () => {
   const [first_name, setFirstName] = useState('');
   const [last_name, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -33,9 +33,6 @@ const Signup = () => {
   };
 
   return (
-    <>
-    <Header/>
-
     <div className="flex items-center justify-center min-h-screen bg-background">
       <Card className="w-full max-w-sm shadow-md">
         <CardHeader>
@@ -90,7 +87,19 @@ const Signup = () => {
         </CardContent>
       </Card>
     </div>
+  );
+}
 
+
+
+
+const Signup = () => {
+
+
+  return (
+    <>
+    <Header/>
+    <SignupLogic/>
     <Footer/>
     </>
   );

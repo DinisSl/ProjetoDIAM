@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import NavMenu from "@/components/NavMenu.jsx";
+import LoginManager from "@/components/LoginManager.jsx";
 
-function Header() {
+const Header = () => {
   const URL_RACES = "http://localhost:8000/race/api/races/";
   const [racesList, setRacesList] = useState([]);
 
@@ -20,11 +22,11 @@ function Header() {
   }, []);
 
   return (
-    <div className="text-center py-10">
+    <div className="text-center ">
 
       {racesList.length > 0 ? (
         <div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-foreground">
+          <h1 className="text-4xl font-extrabold mt-4 text-foreground">
             {racesList[0].name}
           </h1>
 
@@ -37,6 +39,11 @@ function Header() {
           Não há corridas!!!
         </h4>
       )}
+
+      <div className="flex items-center justify-between w-full p-4">
+        <NavMenu/>
+        <LoginManager/>
+      </div>
 
     </div>
   );
