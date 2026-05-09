@@ -1,13 +1,13 @@
 from django.urls import path
 from . import views
 
-app_name = 'votacao'
+app_name = 'race'
 
 urlpatterns = [
     path('api/races/', views.races),
     path('api/race/<int:race_id>', views.race_detail),
-    path('api/runners/', views.races),
-    path('api/runners/<int:race_id>', views.runners_detail),
+    path('api/profiles/', views.profiles),
+    path('api/profiles/<int:profile_id>', views.profiles_detail),
     # ----------------------------
     # LOGIN e LOGOUT
     # ----------------------------

@@ -7,7 +7,7 @@ class RaceSerializer(serializers.ModelSerializer):
         model = Race
         fields = ('name', 'date')
 
-class RunnerSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Runner
-        fields = ('user', 'adminComment', 'classification')
+        model = Profile
+        fields = ('user', 'birthDate','phoneNumber', 'gender', 'clothingSize')

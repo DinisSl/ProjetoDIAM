@@ -52,14 +52,14 @@ def race_detail(request, race_id):
 
 
 @api_view(['GET', 'POST'])
-def runners(request):
+def profiles(request):
     if request.method == 'GET':
-        races_list = Race.objects.all()
-        serializer = RaceSerializer(races_list, many=True)
+        profiles_list = Profile.objects.all()
+        serializer = ProfileSerializer(profiles_list, many=True)
         return Response(serializer.data)
 
     elif request.method == 'POST':
-        serializer = RaceSerializer(data=request.data)
+        serializer = ProfileSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_201_CREATED)
@@ -67,20 +67,20 @@ def runners(request):
 
 
 @api_view(['PUT', 'DELETE'])
-def runners_detail(request, runner_id, race_id):
+def profiles_detail(request, profile_id):
     try:
-        runner = Runner.objects.get(pk=runner_id)
-    except Runner.DoesNotExist:
+        profile = Profile.objects.get(pk=profile_id)
+    except Profile.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
-        serializer = RaceSerializer(runner, data=request.data, partial=True)
+        serializer = ProfileSerializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
     elif request.method == 'DELETE':
-        runner.delete()
+        profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response(status=status.HTTP_400_BAD_REQUEST)

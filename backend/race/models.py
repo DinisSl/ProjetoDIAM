@@ -9,65 +9,76 @@ class Race(models.Model):
         return self.name
 
 
-class Runner(models.Model):
+class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    adminComment = models.CharField(max_length=200)
-    classification = models.IntegerField()
-
-    def __str__(self):
-        return self.user.first_name + " " + self.user.last_name
-
-
-class Voluntary(models.Model):
-    user = models.OneToOneField(User, on_delete = models.CASCADE)
+    birthDate = models.DateField()
     phoneNumber = models.CharField(max_length=20)
+
+    GENDER_CHOICES = (
+        ("M", "Masculino"),
+        ("F", "Feminino")
+    )
+
+    CLOTHING_SIZE_CHOICES = (
+        ("XS", "XS"),
+        ("S", "S"),
+        ("M", "M"),
+        ("L", "L"),
+        ("XL", "XL"),
+        ("2XL", "2XL")
+    )
+
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
+    clothingSize = models.CharField(max_length=3, choices=CLOTHING_SIZE_CHOICES)
 
     def __str__(self):
         return self.user.first_name + " " + self.user.last_name
 
 
 class RunnerSignUp(models.Model):
-    user=models.ForeignKey(Runner, on_delete=models.CASCADE)
+    user=models.ForeignKey(Profile, on_delete=models.CASCADE)
+    signUpDate=models.DateTimeField(auto_now_add=True)
+    classification=models.IntegerField(null=True,blank=True)
+    race=models.ForeignKey(Race, on_delete=models.CASCADE)
+    adminComment=models.TextField(null=True,blank=True)
 
-    signUpDate=models.DateTimeField("Data e hora da Inscricao")
     STATE_CHOICES = (
-        (1,"Banida"),
-        (2,"Ativa" ),
-        (3,"Cancelada")
+        ("PENDENTE", "Pendente"),
+        ("APROVADO", "Aprovado"),
+        ("REJEITADO", "Rejeitado")
     )
 
-    state=models.CharField(choices=STATE_CHOICES)
-    classification=models.IntegerField()
-    race=models.ForeignKey(Race, on_delete=models.CASCADE)
-    admincomment=models.TextField()
+    state = models.CharField(max_length=20, choices=STATE_CHOICES)
 
     def __str__(self):
         return self.user.user.first_name+" "+self.user.user.last_name
 
 
-class VoluntarySignUp(models.Model):
-    user=models.OneToOneField(Voluntary, on_delete=models.CASCADE)
-    signUpDate=models.DateTimeField("Data e hora da Inscrição")
+class VolunteerSignUp(models.Model):
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    signUpDate=models.DateTimeField(auto_now_add=True)
+    race=models.ForeignKey(Race, on_delete=models.CASCADE)
+    adminComment = models.TextField(null=True,blank=True)
 
     ROLE_CHOICES = (
-        (1,"EntregaDorsais"),
-        (2,"ApoioNaPartida"),
-        (3,"CoachDeBancada"),
-        (4,"Orientação"),
-        (5,"Abastecimentos"),
-        (6,"Segurança"),
-        (7,"PrimeirosSocorros"),
-        (8,"Pacer")
+        ("ENTREGA_DORSAIS", "Entrega de Dorsais"),
+        ("APOIO_PARTIDA", "Apoio na Partida"),
+        ("COACH_BANCADA", "Coach de Bancada"),
+        ("ORIENTACAO", "Orientação"),
+        ("ABASTECIMENTOS", "Abastecimentos"),
+        ("SEGURANCA", "Segurança"),
+        ("PRIMEIROS_SOCORROS", "Primeiros Socorros"),
+        ("PACER", "Pacer")
     )
 
-    role=models.CharField(choices=ROLE_CHOICES)
     STATE_CHOICES = (
-    (1,"Pendente"),
-    (2,"Aprovado"),
-    (3,"Rejeitado")
+        ("PENDENTE", "Pendente"),
+        ("APROVADO", "Aprovado"),
+        ("REJEITADO", "Rejeitado")
     )
-    state=models.CharField(choices=STATE_CHOICES)
-    admincomment = models.TextField()
+    state = models.CharField(max_length=20, choices=STATE_CHOICES)
+    role = models.CharField(max_length=30, choices=ROLE_CHOICES)
+
 
     def __str__(self):
         return self.user.user.first_name+" "+self.user.user.last_name
