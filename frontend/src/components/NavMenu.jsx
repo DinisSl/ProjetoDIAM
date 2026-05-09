@@ -7,23 +7,23 @@ const NavMenu = () => {
     return (
         <div>
           <NavigationMenu>
-            <NavigationMenuList>
+            <NavigationMenuList className="gap-2">
 
-              <NavigationMenuItem>
+              <NavigationMenuItem className="border rounded-lg">
                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                      <Link to="/login">Login</Link>
+                      <Link to="/">Home</Link>
                   </NavigationMenuLink>
               </NavigationMenuItem>
 
-              <NavigationMenuItem>
+              <NavigationMenuItem className="border rounded-lg">
                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                      <Link to="/loginmanager">Login Manager</Link>
+                      <Link to="/runnersignup">Inscrição Corredor</Link>
                   </NavigationMenuLink>
               </NavigationMenuItem>
 
-              <NavigationMenuItem>
+              <NavigationMenuItem className="border rounded-lg">
                   <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                      <Link to="/signup">Sign Up</Link>
+                      <Link to="/volunteersignup">Inscrição Voluntário</Link>
                   </NavigationMenuLink>
               </NavigationMenuItem>
 

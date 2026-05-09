@@ -1,13 +1,10 @@
-from django.shortcuts import get_object_or_404
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
 from rest_framework import status
 from django.contrib.auth import authenticate, login, logout
 from .serializers import *
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 import datetime
-
 
 
 @api_view(['GET', 'POST'])
@@ -67,7 +64,7 @@ def profiles(request):
 
 
 @api_view(['PUT', 'DELETE'])
-def profiles_detail(request, profile_id):
+def profile_detail(request, profile_id):
     try:
         profile = Profile.objects.get(pk=profile_id)
     except Profile.DoesNotExist:
@@ -84,6 +81,45 @@ def profiles_detail(request, profile_id):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def runnersignups(request):
+    if request.method == 'GET':
+        runnersignups_list = RunnerSignup.objects.all()
+        serializer = RunnerSignupSerializer(runnersignups_list, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = RunnerSignupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user.profile, state="PENDENTE")
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def runnersignup_detail(request, runnersignup_id):
+    try:
+        runnersignup = RunnerSignup.objects.get(pk=runnersignup_id)
+    except RunnerSignup.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = RunnerSignupSerializer(runnersignup)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = RunnerSignupSerializer(runnersignup, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        runnersignup.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])

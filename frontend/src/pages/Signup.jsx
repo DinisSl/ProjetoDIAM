@@ -95,7 +95,6 @@ const SignupLogic = () => {
 
 const Signup = () => {
 
-
   return (
     <>
     <Header/>

@@ -1,4 +1,7 @@
 from django.contrib import admin
-from .models import Race
+from .models import *
 
 admin.site.register(Race)
+admin.site.register(Profile)
+admin.site.register(RunnerSignup)
+admin.site.register(VolunteerSignup)

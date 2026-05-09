@@ -35,9 +35,9 @@ class Profile(models.Model):
         return self.user.first_name + " " + self.user.last_name
 
 
-class RunnerSignUp(models.Model):
+class RunnerSignup(models.Model):
     user=models.ForeignKey(Profile, on_delete=models.CASCADE)
-    signUpDate=models.DateTimeField(auto_now_add=True)
+    signupDate=models.DateTimeField(auto_now_add=True)
     classification=models.IntegerField(null=True,blank=True)
     race=models.ForeignKey(Race, on_delete=models.CASCADE)
     adminComment=models.TextField(null=True,blank=True)
@@ -54,9 +54,9 @@ class RunnerSignUp(models.Model):
         return self.user.user.first_name+" "+self.user.user.last_name
 
 
-class VolunteerSignUp(models.Model):
+class VolunteerSignup(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    signUpDate=models.DateTimeField(auto_now_add=True)
+    signupDate=models.DateTimeField(auto_now_add=True)
     race=models.ForeignKey(Race, on_delete=models.CASCADE)
     adminComment = models.TextField(null=True,blank=True)
 

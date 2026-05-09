@@ -7,7 +7,9 @@ urlpatterns = [
     path('api/races/', views.races),
     path('api/race/<int:race_id>', views.race_detail),
     path('api/profiles/', views.profiles),
-    path('api/profiles/<int:profile_id>', views.profiles_detail),
+    path('api/profile/<int:profile_id>', views.profile_detail),
+    path('api/runnersignups/', views.runnersignups),
+    path('api/runnersignup/<int:runnersignup_id>', views.runnersignup_detail),
     # ----------------------------
     # LOGIN e LOGOUT
     # ----------------------------
