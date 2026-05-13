@@ -29,7 +29,7 @@ const RunnerSignupLogic = () => {
       .then(() => {alert("Inscrição submetida!")})
       .catch((error) => { console.error("Error on the signup: ", error) });
   }
-
+//teste
   useEffect(() => { getRaces() }, []);
 
   return (
