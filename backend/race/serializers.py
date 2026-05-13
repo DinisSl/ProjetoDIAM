@@ -16,3 +16,8 @@ class RunnerSignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = RunnerSignup
         fields = ('user','signupDate', 'classification','race','adminComment','state')
+
+class VolunteerSignupSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = VolunteerSignup
+        fields = ('user','signupDate', 'role','race','adminComment','state')

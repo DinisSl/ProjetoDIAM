@@ -96,7 +96,7 @@ def runnersignups(request):
         if serializer.is_valid():
             serializer.save(user=request.user.profile, state="PENDENTE")
             return Response(status=status.HTTP_201_CREATED)
-        return Response(status=status.HTTP_400_BAD_REQUEST)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -119,7 +119,42 @@ def runnersignup_detail(request, runnersignup_id):
 
     elif request.method == 'DELETE':
         runnersignup.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def volunteersignups(request):
+    if request.method == 'GET':
+        volunteersignups_list = VolunteerSignup.objects.all()
+        serializer = VolunteerSignupSerializer(volunteersignups_list, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = VolunteerSignupSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user.profile, state="PENDENTE")
+            return Response(status=status.HTTP_201_CREATED)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def volunteersignup_detail(request, volunteersignup_id):
+    try:
+        volunteersignup = VolunteerSignup.objects.get(pk=volunteersignup_id)
+    except VolunteerSignup.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = VolunteerSignupSerializer(volunteersignup)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = VolunteerSignupSerializer(volunteersignup, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        volunteersignup.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['POST'])
