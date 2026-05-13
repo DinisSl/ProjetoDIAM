@@ -22,14 +22,40 @@ const RunnerSignupLogic = () => {
       .catch((error) => { console.error("Error fetching races: ", error) });
   };
 
+
+    const getCSRFToken = () => {
+    return document.cookie.split('; ')
+    .find(row => row.startsWith('csrftoken='))
+    ?.split('=')[1];
+    }
+
+
   const handleRunnerSignup = () => {
     if (!selectedRace) return;
 
-    axios.post(RUNNERSIGNUPS_URL, {race: selectedRace}, { withCredentials: true })
-      .then(() => {alert("Inscrição submetida!")})
-      .catch((error) => { console.error("Error on the signup: ", error) });
-  }
-//teste
+    axios.post(
+        RUNNERSIGNUPS_URL,
+        { race: selectedRace },
+        {
+            headers: {
+                "X-CSRFToken": getCSRFToken(),
+            },
+            withCredentials: true,
+        }
+    )
+    .then(() => {
+        alert("Inscrição submetida!");
+    })
+    .catch((error) => {
+        console.error("Error on the signup:", error);
+    });
+};
+
+
+
+
+
+
   useEffect(() => { getRaces() }, []);
 
   return (
