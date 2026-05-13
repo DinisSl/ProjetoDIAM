@@ -10,6 +10,11 @@ urlpatterns = [
     path('api/profile/<int:profile_id>', views.profile_detail),
     path('api/runnersignups/', views.runnersignups),
     path('api/runnersignup/<int:runnersignup_id>', views.runnersignup_detail),
+    path('api/volunteersignups/', views.volunteersignups),
+    path('api/volunteersignups/<int:volunteersignup_id>', views.volunteersignup_detail),
+
+
+
     # ----------------------------
     # LOGIN e LOGOUT
     # ----------------------------
