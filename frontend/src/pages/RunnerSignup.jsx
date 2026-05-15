@@ -35,11 +35,7 @@ const RunnerSignupLogic = () => {
 
     axios.post(
         RUNNERSIGNUPS_URL,
-        { race: selectedRace },
-        {
-            headers: {
-                "X-CSRFToken": getCSRFToken(),
-            },
+        { race: selectedRace }, {headers: {"X-CSRFToken": getCSRFToken(),},
             withCredentials: true,
         }
     )
