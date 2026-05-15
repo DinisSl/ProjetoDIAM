@@ -23,7 +23,7 @@ import {
 
 const RACES_URL = "http://localhost:8000/race/api/races/";
 
-const SignupForm = ({ signupUrl, title }) => {
+const SignupForm = ({ signupUrl, title, extraFields, onSignup }) => {
   const [racesList, setRacesList] = useState([]);
   const [selectedRace, setSelectedRace] = useState("");
 
@@ -43,24 +43,17 @@ const SignupForm = ({ signupUrl, title }) => {
 
   const handleSignup = () => {
     if (!selectedRace) return;
+    if (onSignup) {
+      onSignup(selectedRace);
+      return;
+    }
 
-    axios
-      .post(
-        signupUrl,
-        { race: selectedRace },
-        {
-          headers: {
-            "X-CSRFToken": getCSRFToken(),
-          },
-          withCredentials: true,
-        }
-      )
-      .then(() => {
-        alert("Inscrição submetida!");
-      })
-      .catch((error) => {
-        console.error("Erro na inscrição:", error);
-      });
+    axios.post(signupUrl, { race: selectedRace }, {
+      headers: { "X-CSRFToken": getCSRFToken() },
+      withCredentials: true,
+    })
+    .then(() => alert("Inscrição submetida!"))
+    .catch((error) => console.error("Erro na inscrição:", error));
   };
 
   useEffect(() => {
@@ -69,19 +62,15 @@ const SignupForm = ({ signupUrl, title }) => {
 
   return (
     <Card className="w-1/5">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
-      </CardHeader>
+      <CardHeader><CardTitle>{title}</CardTitle></CardHeader>
 
       <CardContent className="flex flex-col gap-6">
         <div className="flex flex-col gap-3">
           <Label htmlFor="race">Selecionar Corrida</Label>
-
           <Select onValueChange={setSelectedRace} value={selectedRace}>
             <SelectTrigger id="race" className="w-full">
               <SelectValue placeholder="Escolha uma corrida..." />
             </SelectTrigger>
-
             <SelectContent>
               <SelectGroup>
                 {racesList.map((race) => (
@@ -93,14 +82,12 @@ const SignupForm = ({ signupUrl, title }) => {
             </SelectContent>
           </Select>
         </div>
+
+        {extraFields}
       </CardContent>
 
       <CardFooter>
-        <Button
-          className="w-full"
-          onClick={handleSignup}
-          disabled={!selectedRace}
-        >
+        <Button className="w-full" onClick={handleSignup} disabled={!selectedRace}>
           Inscrever-me
         </Button>
       </CardFooter>

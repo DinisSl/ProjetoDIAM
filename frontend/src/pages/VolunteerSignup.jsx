@@ -14,10 +14,8 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 
-import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
-
-//AINDA N ACABADO ESTÁ A DAR BAD REQUEST NAO CONSIGO REUTILIZAR SignUPForm porque preciso do campo role
 
 const VOLUNTEERSIGNUPS_URL = "http://localhost:8000/race/api/volunteersignups/";
 
@@ -33,79 +31,57 @@ const ROLE_OPTIONS = [
 ];
 
 const VolunteerSignup = () => {
-  const [selectedRace, setSelectedRace] = useState("");
   const [selectedRole, setSelectedRole] = useState("");
 
-  const getCSRFToken = () => {
-    return document.cookie
-      .split("; ")
-      .find((row) => row.startsWith("csrftoken="))
-      ?.split("=")[1];
+  const getCSRFToken = () =>
+      document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("csrftoken="))
+          ?.split("=")[1];
+
+  const handleVolunteerSignup = (selectedRace) => {
+    if (!selectedRole) return;
+
+
+    axios.post(VOLUNTEERSIGNUPS_URL, { race: selectedRace, role: selectedRole }, {
+      headers: { "X-CSRFToken": getCSRFToken() },
+      withCredentials: true,
+    })
+        .then(() => alert("Inscrição de voluntário submetida!"))
+        .catch((error) => console.error("Erro na inscrição:", error));
   };
 
-  const handleVolunteerSignup = () => {
-    if (!selectedRace || !selectedRole) return;
-
-    axios
-      .post(
-        VOLUNTEERSIGNUPS_URL,
-        {
-          race: selectedRace,
-          role: selectedRole,
-        },
-        {
-          headers: {
-            "X-CSRFToken": getCSRFToken(),
-          },
-          withCredentials: true,
-        }
-      )
-      .then(() => {
-        alert("Inscrição de voluntário submetida!");
-      })
-      .catch((error) => {
-        console.error("Erro na inscrição:", error);
-      });
-  };
+  const roleSelector = (
+      <div className="flex flex-col gap-3">
+        <Label>Função de Voluntário</Label>
+        <Select onValueChange={setSelectedRole} value={selectedRole}>
+          <SelectTrigger>
+            <SelectValue placeholder="Escolhe uma função" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              {ROLE_OPTIONS.map((role) => (
+                  <SelectItem key={role.value} value={role.value}>
+                    {role.label}
+                  </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+  );
 
   return (
     <div>
       <Header />
-
-      <div className="p-10 flex items-start justify-center gap-10">
+      <div className="p-10 flex items-start justify-center">
         <SignupForm
           signupUrl={VOLUNTEERSIGNUPS_URL}
           title="Inscrição Voluntário"
+          extraFields={roleSelector}
+          onSignup={handleVolunteerSignup}
         />
-
-        <div className="flex flex-col gap-4 w-64">
-          <label className="text-sm font-medium">Função de Voluntário</label>
-
-          <Select onValueChange={setSelectedRole} value={selectedRole}>
-            <SelectTrigger>
-              <SelectValue placeholder="Escolhe uma função" />
-            </SelectTrigger>
-
-            <SelectContent>
-              <SelectGroup>
-                {ROLE_OPTIONS.map((role) => (
-                  <SelectItem key={role.value} value={role.value}>
-                    {role.label}
-                  </SelectItem>
-                ))}
-              </SelectGroup>
-            </SelectContent>
-          </Select>
-
-          <Button
-            onClick={handleVolunteerSignup}
-            disabled={!selectedRace || !selectedRole}
-          >
-            Inscrever-me como voluntário
-          </Button>
-        </div>
       </div>
-
       <Footer />
     </div>
   );
