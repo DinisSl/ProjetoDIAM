@@ -232,5 +232,7 @@ def logout_view(request):
 def user_view(request):
     return Response({
         'first_name': request.user.first_name,
-        'last_name': request.user.last_name
+        'last_name': request.user.last_name,
+        'is_staff': request.user.is_staff,
+
     })
