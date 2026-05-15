@@ -92,11 +92,16 @@ def runnersignups(request):
         return Response(serializer.data)
 
     elif request.method == 'POST':
+        try:
+            profile = request.user.profile
+        except Profile.DoesNotExist:
+            return Response({'msg': 'Profile not found. Complete your profile first.'},
+                            status=status.HTTP_400_BAD_REQUEST)
         serializer = RunnerSignupSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user.profile, state="PENDENTE")
+            serializer.save(user=profile, state="PENDENTE")
             return Response(status=status.HTTP_201_CREATED)
-    return Response(status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
@@ -121,6 +126,7 @@ def runnersignup_detail(request, runnersignup_id):
         runnersignup.delete()
     return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def volunteersignups(request):
@@ -129,10 +135,16 @@ def volunteersignups(request):
         serializer = VolunteerSignupSerializer(volunteersignups_list, many=True)
         return Response(serializer.data)
     elif request.method == 'POST':
+        try:
+            profile = request.user.profile
+        except Profile.DoesNotExist:
+            return Response({'msg': 'Profile not found.'}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = VolunteerSignupSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user.profile, state="PENDENTE")
+            serializer.save(user=profile, state="PENDENTE")
             return Response(status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -163,19 +175,24 @@ def signup(request):
     last_name = request.data.get('last_name')
     email = request.data.get('email')
     password = request.data.get('password')
+    birth_date = request.data.get('birthDate')
+    phone_number = request.data.get('phoneNumber')
+    gender = request.data.get('gender')
+    clothing_size = request.data.get('clothingSize')
     username = first_name + last_name
 
-    if not first_name or not last_name or not email or not password:
-        return Response({'msg': 'invalid first_name/last_name/password/email'}, status=status.HTTP_400_BAD_REQUEST)
+    if not all([first_name, last_name, email, password, birth_date, phone_number, gender, clothing_size]):
+        return Response({'msg': 'Campos requeridos em falta'}, status=status.HTTP_400_BAD_REQUEST)
 
-    if User.objects.filter(username=username).exists():
-        return Response({'msg': 'username already exists'}, status=status.HTTP_400_BAD_REQUEST)
     elif User.objects.filter(email=email).exists():
-        return Response({'msg': 'email already exists'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'msg': 'Email já existente'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email, password=password,date_joined=datetime.datetime.now())
+    user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name,
+                                    email=email, password=password, date_joined=datetime.datetime.now())
+    Profile.objects.create(user=user, birthDate=birth_date, phoneNumber=phone_number,
+                           gender=gender, clothingSize=clothing_size)
+
     return Response({'msg': 'user ' + user.username + ' created'}, status=status.HTTP_201_CREATED)
-
 
 @api_view(['POST'])
 def login_view(request):

@@ -16,6 +16,7 @@ class RunnerSignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = RunnerSignup
         fields = ('user','signupDate', 'classification','race','adminComment','state')
+        read_only_fields = ('user', 'state', 'signupDate')
 
 class VolunteerSignupSerializer(serializers.ModelSerializer):
     class Meta:

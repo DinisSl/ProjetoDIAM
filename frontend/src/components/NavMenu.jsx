@@ -1,4 +1,8 @@
-import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, navigationMenuTriggerStyle,} from "@/components/ui/navigation-menu";
+import {
+  NavigationMenu,
+  NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList,
+  NavigationMenuTrigger, navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
 import { Link } from "react-router-dom";
 
 const NavMenu = () => {
@@ -16,17 +20,20 @@ const NavMenu = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem className="border rounded-lg">
-                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+
+                <NavigationMenuTrigger>Inscrições</NavigationMenuTrigger>
+
+                  <NavigationMenuContent>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                       <Link to="/runnersignup">Inscrição Corredor</Link>
-                  </NavigationMenuLink>
-              </NavigationMenuItem>
+                    </NavigationMenuLink>
 
-              <NavigationMenuItem className="border rounded-lg">
-                  <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
+                    <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
                       <Link to="/volunteersignup">Inscrição Voluntário</Link>
-                  </NavigationMenuLink>
-              </NavigationMenuItem>
+                    </NavigationMenuLink>
+                  </NavigationMenuContent>
 
+              </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
@@ -34,3 +41,25 @@ const NavMenu = () => {
 }
 
 export default NavMenu;
+
+
+// import {
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuTrigger
+// } from "@/components/ui/dropdown-menu.jsx";
+//
+// <DropdownMenu>
+//   <DropdownMenuTrigger className="border rounded-lg px-4 py-2 text-sm font-medium">
+//     Inscrições
+//   </DropdownMenuTrigger>
+//   <DropdownMenuContent align="start">
+//     <DropdownMenuItem asChild>
+//       <Link to="/runnersignup">Inscrição Corredor</Link>
+//     </DropdownMenuItem>
+//     <DropdownMenuItem asChild>
+//       <Link to="/volunteersignup">Inscrição Voluntário</Link>
+//     </DropdownMenuItem>
+//   </DropdownMenuContent>
+// </DropdownMenu>
