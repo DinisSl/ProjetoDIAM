@@ -22,3 +22,4 @@ class VolunteerSignupSerializer(serializers.ModelSerializer):
     class Meta:
         model = VolunteerSignup
         fields = ('user','signupDate', 'role','race','adminComment','state')
+        read_only_fields = ('user', 'signupDate', 'state')
