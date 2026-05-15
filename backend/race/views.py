@@ -234,4 +234,5 @@ def user_view(request):
         'first_name': request.user.first_name,
         'last_name': request.user.last_name,
         'is_staff': request.user.is_staff,
+
     })

@@ -54,7 +54,7 @@ const NavMenu = () => {
           {isStaff && (
             <NavigationMenuItem className="border rounded-lg">
               <NavigationMenuLink asChild className={navigationMenuTriggerStyle()}>
-                <Link to="/participants">Participantes</Link>
+                <Link to="/admin">Participantes</Link>
               </NavigationMenuLink>
             </NavigationMenuItem>
           )}
